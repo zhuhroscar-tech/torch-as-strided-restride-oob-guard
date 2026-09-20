@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "torch-as-strided-restride-oob-guard"
+version = "0.1.0"
+description = "Guards a real torch.compile(backend='inductor') correctness bug: torch.as_strided on a repeated+sliced view miscomputes its storage-span check against the wrong (larger) span than the operation's own documented contract requires, causing a spurious out-of-bounds RuntimeError or a silently wrong result -- matching the upstream pytorch/pytorch#197431 report and the related #192226"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "zhuhroscar-tech" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+torch = ["torch>=2.0"]
+
+[project.scripts]
+torch-as-strided-restride-oob-guard = "torch_as_strided_restride_oob_guard.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
